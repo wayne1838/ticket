@@ -14,12 +14,12 @@ namespace Ticket.ViewModels.Ticket
 
         /// <summary>類型: 錯誤	功能請求	測試用例 </summary>
         [Required]
-        public TicketType Type { get; set; }
+        public TicketTypeEnum Type { get; set; }
 
 
         /// <summary>狀態:建立	已解決</summary>
         [Required]
-        public TicketStatus Status { get; set; }
+        public TicketStatusEnum Status { get; set; }
 
         /// <summary>摘要</summary>
         [Required]

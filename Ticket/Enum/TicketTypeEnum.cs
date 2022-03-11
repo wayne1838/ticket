@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 namespace Ticket.Enum
 {
     /// <summary>
-    /// 單據狀態
+    /// 建單類型
     /// </summary>
-    public enum TicketStatus
+    public enum TicketTypeEnum
     {
-        [Description("無")]
-        None,
         [Description("錯誤")]
         Error,
         [Description("功能請求")]

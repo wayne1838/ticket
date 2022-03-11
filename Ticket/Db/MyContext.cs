@@ -11,5 +11,6 @@ namespace Ticket.Db
         }
 
         public DbSet<TicketModel> Ticket { get; set; }
+        public DbSet<UserModel> User { get; set; }
     }
 }

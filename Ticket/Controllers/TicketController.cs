@@ -56,7 +56,7 @@ namespace Ticket.Controllers
             var data = _ticketService.GetList(searchDto);
             return Ok(new ResponseModel
             {
-                StatusCode = ResponseStatus.Success,
+                StatusCode = ResponseStatusEnum.Success,
                 Data = data
             });
         }
@@ -75,7 +75,7 @@ namespace Ticket.Controllers
 
             return Ok(new ResponseModel
             {
-                StatusCode = ResponseStatus.Success,
+                StatusCode = ResponseStatusEnum.Success,
                 Data = data
             });
         }
@@ -89,7 +89,7 @@ namespace Ticket.Controllers
         [HttpPost("Error")]
         public IActionResult CreateError([FromBody] TicketCreateReq requestModel)
         {
-            requestModel.Type = TicketType.Error;
+            requestModel.Type = TicketTypeEnum.Error;
 
             return Create(requestModel);
 
@@ -103,7 +103,7 @@ namespace Ticket.Controllers
         [HttpPost("FunctionRequest")]
         public IActionResult CreateFunctionRequest([FromBody] TicketCreateReq requestModel)
         {
-            requestModel.Type = TicketType.FunctionRequest;
+            requestModel.Type = TicketTypeEnum.FunctionRequest;
 
             return Create(requestModel);
 
@@ -117,7 +117,7 @@ namespace Ticket.Controllers
         [HttpPost("TestCase")]
         public IActionResult CreateTestCase([FromBody] TicketCreateReq requestModel)
         {
-            requestModel.Type = TicketType.TestCase;
+            requestModel.Type = TicketTypeEnum.TestCase;
 
             return Create(requestModel);
 
@@ -141,7 +141,7 @@ namespace Ticket.Controllers
 
             return Ok(new ResponseModel
             {
-                StatusCode = createId > -1 ? ResponseStatus.Success : ResponseStatus.Fail,
+                StatusCode = createId > -1 ? ResponseStatusEnum.Success : ResponseStatusEnum.Fail,
                 Data = createId
             });
 
@@ -161,7 +161,7 @@ namespace Ticket.Controllers
 
             return Ok(new ResponseModel
             {
-                StatusCode = isSuccess ? ResponseStatus.Success : ResponseStatus.Fail,
+                StatusCode = isSuccess ? ResponseStatusEnum.Success : ResponseStatusEnum.Fail,
                 Data = null
             });
 
@@ -181,7 +181,7 @@ namespace Ticket.Controllers
 
             return Ok(new ResponseModel
             {
-                StatusCode = isSuccess ? ResponseStatus.Success : ResponseStatus.Fail,
+                StatusCode = isSuccess ? ResponseStatusEnum.Success : ResponseStatusEnum.Fail,
                 Data = null
             });
 
@@ -199,7 +199,7 @@ namespace Ticket.Controllers
 
             return Ok(new ResponseModel
             {
-                StatusCode = isSuccess ? ResponseStatus.Success : ResponseStatus.Fail,
+                StatusCode = isSuccess ? ResponseStatusEnum.Success : ResponseStatusEnum.Fail,
                 Data = null
             });
         }

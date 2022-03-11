@@ -9,7 +9,7 @@ namespace Ticket.Enum
     /// <summary>
     /// api回傳狀態
     /// </summary>
-    public enum ResponseStatus
+    public enum ResponseStatusEnum
     {
         [Description("失敗")]
         Fail = 0,

@@ -47,7 +47,6 @@ namespace Ticket
             });
             services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<ITicketAdapter, TicketAdapter>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
