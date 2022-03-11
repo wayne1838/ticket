@@ -29,7 +29,10 @@ namespace Ticket.Controllers
             _context = context;
         }
 
-
+        /// <summary>
+        /// 測試用API
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("hello")]
         public IActionResult Hello()
         {
@@ -83,7 +86,7 @@ namespace Ticket.Controllers
         /// </summary>
         /// <param name="requestModel">新增資料</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("Error")]
         public IActionResult CreateError([FromBody] TicketCreateReq requestModel)
         {
             requestModel.Type = TicketType.Error;
@@ -97,7 +100,7 @@ namespace Ticket.Controllers
         /// </summary>
         /// <param name="requestModel">新增資料</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("FunctionRequest")]
         public IActionResult CreateFunctionRequest([FromBody] TicketCreateReq requestModel)
         {
             requestModel.Type = TicketType.FunctionRequest;
@@ -111,7 +114,7 @@ namespace Ticket.Controllers
         /// </summary>
         /// <param name="requestModel">新增資料</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("TestCase")]
         public IActionResult CreateTestCase([FromBody] TicketCreateReq requestModel)
         {
             requestModel.Type = TicketType.TestCase;
@@ -170,7 +173,7 @@ namespace Ticket.Controllers
         /// <param name="id">ID</param>
         /// <param name="requestModel">內容</param>
         /// <returns></returns>
-        [HttpPut("{id}")]
+        [HttpPut("Status/{id}")]
         public IActionResult UpdateStatus([FromRoute] int id, [FromBody] TicketRequestModel requestModel)
         {
 
