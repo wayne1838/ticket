@@ -2,8 +2,10 @@
 using System.Data;
 using System.Data.SqlClient;
 using Ticket.Adapter.Ticket.Interface;
+using Ticket.Db;
 using Ticket.Models.Ticket;
 using Ticket.Service.Ticket.Interface;
+using Ticket.ViewModels.Ticket;
 
 namespace Ticket.Service.Ticket
 {
@@ -11,18 +13,21 @@ namespace Ticket.Service.Ticket
     {
 
         private readonly ITicketAdapter _ticketAdapter;
+        private readonly MyContext _context;
 
-        public TicketService(ITicketAdapter TicketAdapter)
+        public TicketService(ITicketAdapter TicketAdapter, MyContext context)
         {
             _ticketAdapter = TicketAdapter;
+            _context = context;
         }
 
-        public IEnumerable<TicketRequestModel> GetList(TicketSearchDto tacketDto)
+        public List<TicketModel> GetList(TicketSearchDto tacketDto)
         {
+
             return _ticketAdapter.GetList(tacketDto);
         }
 
-        public TicketRequestModel Get(int id)
+        public TicketModel Get(int id)
         {
             return _ticketAdapter.Get(id);
         }

@@ -2,9 +2,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Ticket.Adapter.Ticket;
+using Ticket.Adapter.Ticket.Interface;
+using Ticket.Db;
+using Ticket.Service.Ticket;
+using Ticket.Service.Ticket.Interface;
 
 namespace Ticket
 {
@@ -26,11 +32,20 @@ namespace Ticket
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            services.AddDbContext<MyContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+            services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<ITicketAdapter, TicketAdapter>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MyContext dbContext)
         {
+            // 建立資料庫            
+            //dbContext.Database.EnsureCreated();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -56,6 +71,9 @@ namespace Ticket
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                      name: "api",
+                      pattern: "api/{controller}/{action}");
             });
 
             app.UseSpa(spa =>

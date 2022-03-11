@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Ticket.Enum;
 
-namespace Ticket.Models.Ticket
+namespace Ticket.ViewModels.Ticket
 {
-    public class TicketRequestModel
+    public class TicketResponseModel
     {
         /// <summary>ID</summary>
         public int Id { get; set; }

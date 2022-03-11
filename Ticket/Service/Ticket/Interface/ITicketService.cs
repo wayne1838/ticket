@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Ticket.Models.Ticket;
+using Ticket.ViewModels.Ticket;
 
 namespace Ticket.Service.Ticket.Interface
 {
@@ -13,13 +14,13 @@ namespace Ticket.Service.Ticket.Interface
         /// 取得或搜尋所有內容
         /// </summary>
         /// <returns></returns>
-       IEnumerable<TicketRequestModel> GetList(TicketSearchDto tacketDto);
+        List<TicketModel> GetList(TicketSearchDto tacketDto);
 
         /// <summary>
         ///取得資料 by ID
         /// </summary>
         /// <returns></returns>
-        TicketRequestModel Get(int id);
+        TicketModel Get(int id);
 
 
         /// <summary>

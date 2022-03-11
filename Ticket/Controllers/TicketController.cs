@@ -4,30 +4,39 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ticket.Db;
 using Ticket.Enum;
 using Ticket.Models.Ticket;
 using Ticket.Service.Ticket.Interface;
+using Ticket.ViewModels;
+using Ticket.ViewModels.Ticket;
 
 namespace Ticket.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/ticket")]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;
 
         private readonly ILogger<TicketController> _logger;
+        private readonly MyContext _context;
 
-        public TicketController(ILogger<TicketController> logger, ITicketService ticketService)
+        public TicketController(ILogger<TicketController> logger, ITicketService ticketService, MyContext context)
         {
             this._logger = logger;
             this._ticketService = ticketService;
+            _context = context;
         }
 
 
-        [HttpGet]
+        [HttpGet("hello")]
         public IActionResult Hello()
         {
+            //https://localhost:44368/api/ticket/hello
+            var testData = _context.Ticket.ToList();
+
+            List<TicketModel> testData1 = _context.Ticket.Where(w=>w.Id==1).ToList();
             return Ok("Hello");
         }
 
@@ -125,7 +134,7 @@ namespace Ticket.Controllers
                 return BadRequest();
             }
 
-            var createId = _ticketService.Create(requestModel);
+            var createId = 0;// _ticketService.Create(requestModel);
 
             return Ok(new ResponseModel
             {

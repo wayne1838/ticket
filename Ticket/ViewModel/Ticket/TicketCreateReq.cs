@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Ticket.Enum;
 
-namespace Ticket.Models.Ticket
+namespace Ticket.ViewModels.Ticket
 {
     public class TicketCreateReq
     {

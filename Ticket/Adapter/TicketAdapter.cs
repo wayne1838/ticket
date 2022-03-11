@@ -3,21 +3,34 @@ using System.Data;
 using System.Data.SqlClient;
 using Ticket.Adapter.Ticket.Interface;
 using Ticket.Models.Ticket;
-using Ticket.Service.Ticket.Interface;
+using Ticket.Adapter.Ticket.Interface;
+using Ticket.ViewModels.Ticket;
+using Ticket.Db;
+using System.Linq;
 
-namespace Ticket.Service.Ticket
+namespace Ticket.Adapter.Ticket
 {
     public class TicketAdapter : ITicketAdapter
     {
 
-        private readonly ITicketAdapter _ticketAdapter;
+        private readonly MyContext _context;
 
-        public IEnumerable<TicketRequestModel> GetList(TicketSearchDto tacketDto)
+        public TicketAdapter( MyContext context)
         {
-            throw new System.NotImplementedException();
+            _context = context;
         }
 
-        public TicketRequestModel Get(int id)
+        public List<TicketModel> GetList(TicketSearchDto tacketDto)
+        {
+            return _context.Ticket.Where(w => 
+            w.Type == tacketDto.Type &&
+            ( tacketDto.Status!=null && w.Status == tacketDto.Status) &&
+            w.Summary.Contains(tacketDto.Summary)
+            ).ToList();
+            
+        }
+
+        public TicketModel Get(int id)
         {
             throw new System.NotImplementedException();
         }

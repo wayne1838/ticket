@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using Ticket.Enum;
 
-namespace Ticket.Models.Ticket
+namespace Ticket.ViewModels
 {
     public class ResponseModel
     {

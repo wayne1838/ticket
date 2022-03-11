@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using Ticket.Enum;
 
-namespace Ticket.Models.Ticket
+namespace Ticket.ViewModels.Ticket
 {
     public class TicketSearchDto
     {
@@ -13,7 +13,7 @@ namespace Ticket.Models.Ticket
         public TicketType Type { get; set; }
 
         /// <summary>狀態:建立	已解決</summary>
-        public TicketStatus Status { get; set; }
+        public TicketStatus? Status { get; set; }
 
         /// <summary>摘要</summary>
         public string Summary { get; set; }
