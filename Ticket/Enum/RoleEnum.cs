@@ -11,12 +11,24 @@ namespace Ticket.Enum
     /// </summary>
     public enum RoleEnum
     {
+        /// <summary>
+        /// QA
+        /// </summary>
         [Description("QA")]
         QA,
+        /// <summary>
+        /// RD
+        /// </summary>
         [Description("RD")]
         RD,
+        /// <summary>
+        /// PM
+        /// </summary>
         [Description("PM")]
         PM,
+        /// <summary>
+        /// Admin
+        /// </summary>
         [Description("Admin")]
         Admin,
     }

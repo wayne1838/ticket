@@ -11,13 +11,15 @@ namespace Ticket.Enum
     /// </summary>
     public enum TicketStatusEnum
     {
+        /// <summary>
+        /// 無
+        /// </summary>
         [Description("無")]
         None,
-        [Description("錯誤")]
-        Error,
-        [Description("功能請求")]
-        FunctionRequest,
-        [Description("測試用例")]
-        TestCase,
+        /// <summary>
+        /// 已解決
+        /// </summary>
+        [Description("已解決")]
+        Solve,
     }
 }

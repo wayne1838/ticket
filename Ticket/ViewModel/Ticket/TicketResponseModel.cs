@@ -31,11 +31,11 @@ namespace Ticket.ViewModels.Ticket
 
         /// <summary>嚴重性</summary>
         [Required]
-        public string Serious { get; set; }
+        public int Serious { get; set; }
 
         /// <summary>優先級</summary>
         [Required]
-        public string Priority { get; set; }
+        public int Priority { get; set; }
 
 
 

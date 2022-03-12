@@ -8,7 +8,9 @@ using System.Reflection;
 
 namespace Ticket.Extensions
 {
-
+    /// <summary>
+    /// 取得指定列舉的描述
+    /// </summary>
     public static class EnumExtension
     {
 
