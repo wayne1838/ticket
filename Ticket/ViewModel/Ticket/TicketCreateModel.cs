@@ -7,10 +7,8 @@ using Ticket.Enum;
 
 namespace Ticket.ViewModels.Ticket
 {
-    public class TicketCreateReq
+    public class TicketCreateModel
     {
-        /// <summary>ID</summary>
-        public int Id { get; set; }
 
         /// <summary>類型: 錯誤	功能請求	測試用例 </summary>
         [Required]
@@ -31,11 +29,11 @@ namespace Ticket.ViewModels.Ticket
 
         /// <summary>嚴重性</summary>
         [Required]
-        public string Serious { get; set; }
+        public int Serious { get; set; }
 
         /// <summary>優先級</summary>
         [Required]
-        public string Priority { get; set; }
+        public int Priority { get; set; }
 
 
 

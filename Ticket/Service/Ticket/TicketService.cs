@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using AutoMapper;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using Ticket.Adapter.Ticket.Interface;
 using Ticket.Db;
+using Ticket.Enum;
 using Ticket.Models.Ticket;
 using Ticket.Service.Ticket.Interface;
 using Ticket.ViewModels.Ticket;
@@ -13,33 +16,41 @@ namespace Ticket.Service.Ticket
     {
 
         private readonly ITicketAdapter _ticketAdapter;
-        private readonly MyContext _context;
+        private readonly IMapper _mapper;
 
-        public TicketService(ITicketAdapter TicketAdapter, MyContext context)
+        public TicketService(ITicketAdapter TicketAdapter, IMapper mapper)
         {
-            _ticketAdapter = TicketAdapter;
-            _context = context;
+            this._ticketAdapter = TicketAdapter;
+            this._mapper = mapper;
         }
 
-        public List<TicketModel> GetList(TicketSearchDto tacketDto)
+        public List<TicketDto> GetList(TicketSearchDto tacketDto)
         {
 
-            return _ticketAdapter.GetList(tacketDto);
+            return _mapper.Map<List<TicketDto>>(_ticketAdapter.GetList(tacketDto)); ;
         }
 
-        public TicketModel Get(int id)
+        public TicketDto Get(int id)
         {
-            return _ticketAdapter.Get(id);
+            return _mapper.Map<TicketDto>(_ticketAdapter.Get(id));
         }
 
-        public int Create(TicketRequestModel model)
+        public int Create(TicketDto model)
         {
-            return _ticketAdapter.Create(model);
+            
+            return _ticketAdapter.Create(_mapper.Map<TicketModel>(model));
         }
 
-        public bool Update(TicketRequestModel model)
+        public bool Update(TicketDto model)
         {
-            return _ticketAdapter.Update(model);
+            return  _ticketAdapter.Update(_mapper.Map<TicketModel>(model));
+        }
+
+        public bool UpdateSolve(int id)
+        {
+            var data = _ticketAdapter.Get(id);
+            data.Status = TicketStatusEnum.Solve;
+            return _ticketAdapter.Update(data);
         }
 
         public bool Delete(int id)

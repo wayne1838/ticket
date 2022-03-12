@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Ticket.Models.Ticket;
 using Ticket.ViewModels.Ticket;
 
@@ -27,14 +28,14 @@ namespace Ticket.Adapter.Ticket.Interface
         /// 新增合約管理
         /// </summary>
         /// <returns></returns>
-        int Create(TicketRequestModel model);
+        int Create(TicketModel model);
 
 
         /// <summary>
         /// 更新合約頁面資料
         /// </summary>
         /// <returns></returns>
-        bool Update(TicketRequestModel model);
+        bool Update(TicketModel model);
 
 
 

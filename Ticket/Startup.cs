@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +17,7 @@ using System.Text;
 using Ticket.Adapter.Ticket;
 using Ticket.Adapter.Ticket.Interface;
 using Ticket.Db;
+using Ticket.Mapping;
 using Ticket.Service.Ticket;
 using Ticket.Service.Ticket.Interface;
 
@@ -76,6 +78,13 @@ namespace Ticket
             });
             services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<ITicketAdapter, TicketAdapter>();
+            //automapper
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             //JWT
             services

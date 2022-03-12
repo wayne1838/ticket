@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,13 +24,13 @@ namespace Ticket.Controllers
         private readonly ITicketService _ticketService;
 
         private readonly ILogger<TicketController> _logger;
-        private readonly MyContext _context;
+        private readonly IMapper _mapper;
 
-        public TicketController(ILogger<TicketController> logger, ITicketService ticketService, MyContext context)
+        public TicketController(ILogger<TicketController> logger, ITicketService ticketService,  IMapper mapper)
         {
             this._logger = logger;
             this._ticketService = ticketService;
-            _context = context;
+            this._mapper = mapper;
         }
 
         /// <summary>
@@ -63,7 +64,6 @@ namespace Ticket.Controllers
         /// <param name="searchDto">條件</param>
         /// <returns></returns>
         [HttpPost("List")]
-        [HttpGet]
         public IActionResult GetList(TicketSearchDto searchDto)
         {
             if (searchDto is null) return BadRequest();
@@ -100,8 +100,9 @@ namespace Ticket.Controllers
         /// </summary>
         /// <param name="requestModel">新增資料</param>
         /// <returns></returns>
+        [Authorize(Roles = "QA")]
         [HttpPost("Error")]
-        public IActionResult CreateError([FromBody] TicketCreateReq requestModel)
+        public IActionResult CreateError([FromBody] TicketCreateModel requestModel)
         {
             requestModel.Type = TicketTypeEnum.Error;
 
@@ -114,8 +115,9 @@ namespace Ticket.Controllers
         /// </summary>
         /// <param name="requestModel">新增資料</param>
         /// <returns></returns>
+        [Authorize(Roles = "PM")]
         [HttpPost("FunctionRequest")]
-        public IActionResult CreateFunctionRequest([FromBody] TicketCreateReq requestModel)
+        public IActionResult CreateFunctionRequest([FromBody] TicketCreateModel requestModel)
         {
             requestModel.Type = TicketTypeEnum.FunctionRequest;
 
@@ -128,8 +130,9 @@ namespace Ticket.Controllers
         /// </summary>
         /// <param name="requestModel">新增資料</param>
         /// <returns></returns>
+        [Authorize(Roles = "QA")]
         [HttpPost("TestCase")]
-        public IActionResult CreateTestCase([FromBody] TicketCreateReq requestModel)
+        public IActionResult CreateTestCaseAsync([FromBody] TicketCreateModel requestModel)
         {
             requestModel.Type = TicketTypeEnum.TestCase;
 
@@ -142,16 +145,15 @@ namespace Ticket.Controllers
         /// </summary>
         /// <param name="requestModel">新增資料</param>
         /// <returns></returns>
-        [HttpPost]
-        public IActionResult Create([FromBody] TicketCreateReq requestModel)
+        private IActionResult Create([FromBody] TicketCreateModel requestModel)
         {
 
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-
-            var createId = 0;// _ticketService.Create(requestModel);
+            var dto = _mapper.Map<TicketDto>(requestModel);
+            var createId =  _ticketService.Create(dto);
 
             return Ok(new ResponseModel
             {
@@ -167,11 +169,13 @@ namespace Ticket.Controllers
         /// <param name="id">ID</param>
         /// <param name="requestModel">內容</param>
         /// <returns></returns>
+        [Authorize(Roles = "QA")]
         [HttpPut("{id}")]
         public IActionResult Update([FromRoute] int id, [FromBody] TicketRequestModel requestModel)
         {
-
-            var isSuccess = _ticketService.Update(requestModel);
+            requestModel.Id = id;
+            var dto = _mapper.Map<TicketDto>(requestModel);
+            var isSuccess = _ticketService.Update(dto);
 
             return Ok(new ResponseModel
             {
@@ -185,13 +189,13 @@ namespace Ticket.Controllers
         /// 更新狀態為解決
         /// </summary>
         /// <param name="id">ID</param>
-        /// <param name="requestModel">內容</param>
         /// <returns></returns>
+        [Authorize(Roles = "RD")]
         [HttpPut("Status/{id}")]
-        public IActionResult UpdateStatus([FromRoute] int id, [FromBody] TicketRequestModel requestModel)
+        public IActionResult UpdateSolve([FromRoute] int id)
         {
 
-            var isSuccess = _ticketService.Update(requestModel);
+            var isSuccess = _ticketService.UpdateSolve(id);
 
             return Ok(new ResponseModel
             {
@@ -205,6 +209,7 @@ namespace Ticket.Controllers
         /// 刪除
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "QA")]
         [HttpDelete("{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
