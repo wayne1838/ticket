@@ -13,29 +13,23 @@ namespace Ticket.ViewModels.Ticket
         public int Id { get; set; }
 
         /// <summary>類型: 錯誤	功能請求	測試用例 </summary>
-        [Required]
         public TicketTypeEnum Type { get; set; }
 
 
         /// <summary>狀態:建立	已解決</summary>
-        [Required]
         public TicketStatusEnum Status { get; set; }
 
         /// <summary>摘要</summary>
-        [Required]
         public string Summary { get; set; }
 
         /// <summary>描述</summary>
-        [Required]
         public string Desc { get; set; }
 
         /// <summary>嚴重性</summary>
-        [Required]
-        public int Serious { get; set; }
+        public int? Serious { get; set; }
 
         /// <summary>優先級</summary>
-        [Required]
-        public int Priority { get; set; }
+        public int? Priority { get; set; }
 
 
 

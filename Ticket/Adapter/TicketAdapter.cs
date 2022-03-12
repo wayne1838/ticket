@@ -28,7 +28,7 @@ namespace Ticket.Adapter.Ticket
 
             var list = _context.Ticket.Where(w =>
                 w.Type == tacketDto.Type &&
-                (tacketDto.Status != null && w.Status == tacketDto.Status) &&
+                (tacketDto.Status == null || w.Status == tacketDto.Status) &&
                 w.Summary.Contains(tacketDto.Summary)
             ).ToList();
 

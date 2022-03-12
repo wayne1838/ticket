@@ -25,10 +25,10 @@ namespace Ticket.Models.Ticket
         public string Desc { get; set; }
 
         /// <summary>嚴重性</summary>
-        public int Serious { get; set; }
+        public int? Serious { get; set; }
 
         /// <summary>優先級</summary>
-        public int Priority { get; set; }
+        public int? Priority { get; set; }
 
 
 

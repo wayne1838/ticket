@@ -37,13 +37,11 @@ namespace Ticket.Controllers
         /// 測試用API
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpGet("hello")]
         public IActionResult Hello()
         {
             //https://localhost:44368/api/ticket/hello
-            var roles = ((ClaimsIdentity)User.Identity).Claims
-                .Where(c => c.Type == ClaimTypes.Role)
-                .Select(c => c.Value);
             return Ok("Hello");
         }
         /// <summary>
@@ -104,9 +102,10 @@ namespace Ticket.Controllers
         [HttpPost("Error")]
         public IActionResult CreateError([FromBody] TicketCreateModel requestModel)
         {
-            requestModel.Type = TicketTypeEnum.Error;
+            var dto = _mapper.Map<TicketDto>(requestModel);
+            dto.Type = TicketTypeEnum.Error;
 
-            return Create(requestModel);
+            return Create(dto);
 
         }
 
@@ -119,9 +118,10 @@ namespace Ticket.Controllers
         [HttpPost("FunctionRequest")]
         public IActionResult CreateFunctionRequest([FromBody] TicketCreateModel requestModel)
         {
-            requestModel.Type = TicketTypeEnum.FunctionRequest;
+            var dto = _mapper.Map<TicketDto>(requestModel);
+            dto.Type = TicketTypeEnum.FunctionRequest;
 
-            return Create(requestModel);
+            return Create(dto);
 
         }
 
@@ -134,25 +134,26 @@ namespace Ticket.Controllers
         [HttpPost("TestCase")]
         public IActionResult CreateTestCaseAsync([FromBody] TicketCreateModel requestModel)
         {
-            requestModel.Type = TicketTypeEnum.TestCase;
+            var dto = _mapper.Map<TicketDto>(requestModel);
+            dto.Type = TicketTypeEnum.TestCase;
 
-            return Create(requestModel);
+            return Create(dto);
 
         }
 
         /// <summary>
         /// 新增
         /// </summary>
-        /// <param name="requestModel">新增資料</param>
+        /// <param name="dto">新增資料</param>
         /// <returns></returns>
-        private IActionResult Create([FromBody] TicketCreateModel requestModel)
+        private IActionResult Create([FromBody] TicketDto dto)
         {
 
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            var dto = _mapper.Map<TicketDto>(requestModel);
+           
             var createId =  _ticketService.Create(dto);
 
             return Ok(new ResponseModel

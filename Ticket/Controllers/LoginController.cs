@@ -32,7 +32,8 @@ namespace Ticket.Controllers
         }
 
         /// <summary>
-        /// 登入
+        /// 登入 
+        /// 如果要在swagger使用token 要加上Bearer+"空白"+token
         /// </summary>
         /// <param name="userName"></param>
         /// <returns>Token</returns>
