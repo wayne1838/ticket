@@ -10,10 +10,15 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Ticket.Db;
+using Ticket.Enum;
+using Ticket.Extensions;
+using Ticket.Models.Ticket;
+using Ticket.Models.User;
 
 namespace Ticket.Controllers
 {
     [ApiController]
+    [AllowAnonymous]
     [Route("api/login")]
     public class LoginController : ControllerBase
     {
@@ -31,13 +36,13 @@ namespace Ticket.Controllers
         /// </summary>
         /// <param name="userName"></param>
         /// <returns>Token</returns>
-        [AllowAnonymous]
         [HttpGet()]
         public IActionResult LogIn(string userName)
         {
-            if (_context.User.Any(f=>f.UserName== userName))
+            var user = _context.User.FirstOrDefault(f => f.UserName == userName);
+            if (user!=null)
             {
-                return GetToken(userName);
+                return GetToken(user);
             }
             else
             {
@@ -45,9 +50,31 @@ namespace Ticket.Controllers
             }
         }
 
-        private IActionResult GetToken(string userName, int expireMinutes = 30)
+
+        [HttpGet("~/claims")]
+        public IActionResult GetClaims()
+        {
+            return Ok(User.Claims.Select(p => new { p.Type, p.Value }));
+        }
+
+        [HttpGet("~/username")]
+        public IActionResult GetUserName()
+        {
+            return Ok(User.Identity.Name);
+        }
+
+        [HttpGet("~/jwtid")]
+        public IActionResult GetUniqueId()
+        {
+            var jti = User.Claims.FirstOrDefault(p => p.Type == "jti");
+            return Ok(jti.Value);
+        }
+
+
+        private IActionResult GetToken(UserModel user, int expireMinutes = 30)
         {   //https://blog.miniasp.com/post/2019/12/16/How-to-use-JWT-token-based-auth-in-aspnet-core-31
-            if (!string.IsNullOrEmpty(userName))
+            
+            if (!string.IsNullOrEmpty(user.UserName))
             {
                 var issuer = Configuration.GetValue<string>("JwtSettings:Issuer");
                 var signKey = Configuration.GetValue<string>("JwtSettings:SignKey");
@@ -56,7 +83,7 @@ namespace Ticket.Controllers
 
                 // 在 RFC 7519 規格中(Section#4)，總共定義了 7 個預設的 Claims，我們應該只用的到兩種！
                 //claims.Add(new Claim(JwtRegisteredClaimNames.Iss, issuer));
-                claims.Add(new Claim(JwtRegisteredClaimNames.Sub, userName)); // User.Identity.Name
+                claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.UserName)); // User.Identity.Name
                                                                               //claims.Add(new Claim(JwtRegisteredClaimNames.Aud, "The Audience"));
                                                                               //claims.Add(new Claim(JwtRegisteredClaimNames.Exp, DateTimeOffset.UtcNow.AddMinutes(30).ToUnixTimeSeconds().ToString()));
                                                                               //claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString())); // 必須為數字
@@ -70,8 +97,9 @@ namespace Ticket.Controllers
                 //claims.Add(new Claim(ClaimTypes.Name, userName));
 
                 // 你可以自行擴充 "roles" 加入登入者該有的角色
-                claims.Add(new Claim("roles", "Admin"));
-                claims.Add(new Claim("roles", "Users"));
+                //claims.Add(new Claim("roles", "Admin"));
+                //claims.Add(new Claim("roles", "Users"));
+                claims.Add(new Claim("roles", EnumExtension.GetEnumDescription<RoleEnum>(user.Role))); 
 
                 var userClaimsIdentity = new ClaimsIdentity(claims);
 
@@ -110,5 +138,6 @@ namespace Ticket.Controllers
                 return BadRequest(new { message = "username or password is incorrect." });
             }
         }
+
     }
 }

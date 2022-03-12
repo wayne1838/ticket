@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Ticket.Models.Ticket;
+using Ticket.Models.User;
 
 namespace Ticket.Db
 {

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Ticket.Db;
 using Ticket.Enum;
@@ -15,6 +17,7 @@ namespace Ticket.Controllers
 {
     [ApiController]
     [Route("api/ticket")]
+    [Authorize]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;
@@ -37,9 +40,20 @@ namespace Ticket.Controllers
         public IActionResult Hello()
         {
             //https://localhost:44368/api/ticket/hello
-            var testData = _context.Ticket.ToList();
-
-            List<TicketModel> testData1 = _context.Ticket.Where(w=>w.Id==1).ToList();
+            var roles = ((ClaimsIdentity)User.Identity).Claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value);
+            return Ok("Hello");
+        }
+        /// <summary>
+        /// 測試用API QA
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "QA")]
+        [HttpGet("hello2")]
+        public IActionResult Hello2()
+        {
+           
             return Ok("Hello");
         }
 
