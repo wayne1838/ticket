@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';  
 import { MatTable } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
@@ -12,20 +13,34 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class TicketComponent {
   public tickets: TicketModel[];
   @ViewChild(MatTable, { static: false }) table: MatTable<TicketModel>;
-  displayedColumns: string[] = ['type', 'status', 'summary', 'desc', 'edit','solve','remove'];
+  displayedColumns: string[] = ['type', 'status', 'summary', 'desc'];
   role = "";
-  constructor(private jwtHelperService: JwtHelperService,private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(
+    private router: Router,
+    private jwtHelperService: JwtHelperService,
+    private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.getUserRole();
     this.getList();
 
+    if (this.role == "QA") {
+      this.displayedColumns = [...this.displayedColumns, 'edit', 'remove'];
+    } else if (this.role == "RD") {
+      this.displayedColumns = [...this.displayedColumns, 'solve'];
+    }
   }
 
   getUserRole() {
     //取得使用者角色
+    var accessToken = localStorage.access_token;
+    //如果沒有資訊代表沒有登入 導到登入
+    if (!accessToken) {
+      this.router.navigate(['/login']);
+    }
 
     //解析JWT
-    var token = this.jwtHelperService.decodeToken(localStorage.access_token);
+    var token = this.jwtHelperService.decodeToken(accessToken);
     this.role = token.roles;
+
    
   }
 
@@ -37,13 +52,17 @@ export class TicketComponent {
       console.log(this.tickets);
     })
   }
-  
+  getRandom(min, max) {
+    return Math.floor(Math.random() * max) + min;
+  }
   addData() {
-    var data: TicketModel;
-    data.type = TypeEnum.Error;
-    data.status = StatusEnum.None;
-    data.summary = "test";
-    data.desc = "測試用";
+    var num :string= this.getRandom(1, 99999);
+    var data: TicketModel = {
+      type : TypeEnum.Error,
+      status : StatusEnum.None,
+      summary: "No."+num,
+      desc: "測試用" + num
+    };
     this.http.post<any>('/api/ticket/error', data)
       .subscribe({
         next: data => {
@@ -130,12 +149,12 @@ export const StatusEnumLabel = new Map<number, string>([
   [StatusEnum.Solve, '已解決']
 ]);
 interface TicketModel {
-  id: number;
+  id?: number;
   type: TypeEnum;
-  status: number;
+  status: StatusEnum;
   summary: string;
   desc: string;
-  serious: number;
-  priority: number;
+  serious?: number;
+  priority?: number;
 }
 

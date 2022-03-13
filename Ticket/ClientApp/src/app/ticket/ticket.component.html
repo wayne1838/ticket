@@ -1,15 +1,15 @@
 <h1>Ticket</h1>
 
 <div class="demo-button-container">
-  <button mat-raised-button (click)="addData()" class="demo-button">
-    Add data
+  <h3>現在登入的身分為{{role}}</h3>
+  <button mat-raised-button (click)="addData()" *ngIf="role=='QA'" class="demo-button">
+    新增錯誤
   </button>
-  <button
-      mat-raised-button
-      
-      (click)="removeData()"
-      class="demo-button">
-    Remove data
+  <button mat-raised-button (click)="addData()" *ngIf="role=='PM'" class="demo-button">
+    新增功能請求
+  </button>
+  <button mat-raised-button (click)="addData()" *ngIf="role=='QA'" class="demo-button">
+    新增測試用例
   </button>
 </div>
 <div>
