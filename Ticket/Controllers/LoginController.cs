@@ -14,6 +14,7 @@ using Ticket.Enum;
 using Ticket.Extensions;
 using Ticket.Models.Ticket;
 using Ticket.Models.User;
+using Ticket.ViewModels;
 
 namespace Ticket.Controllers
 {
@@ -35,15 +36,16 @@ namespace Ticket.Controllers
         /// 登入 
         /// 如果要在swagger使用token 要加上Bearer+"空白"+token
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="User"></param>
         /// <returns>Token</returns>
-        [HttpGet()]
-        public IActionResult LogIn(string userName)
+        //[HttpGet()]
+        [HttpPost("login")]
+        public IActionResult LogIn([FromBody] LoginModel User)
         {
-            var user = _context.User.FirstOrDefault(f => f.UserName == userName);
-            if (user!=null)
+            var userData = _context.User.FirstOrDefault(f => f.UserName == User.UserName);
+            if (userData != null)
             {
-                return GetToken(user);
+                return GetToken(userData);
             }
             else
             {
