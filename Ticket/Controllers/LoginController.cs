@@ -54,24 +54,24 @@ namespace Ticket.Controllers
         }
 
 
-        [HttpGet("~/claims")]
-        public IActionResult GetClaims()
-        {
-            return Ok(User.Claims.Select(p => new { p.Type, p.Value }));
-        }
+        //[HttpGet("~/claims")]
+        //public IActionResult GetClaims()
+        //{
+        //    return Ok(User.Claims.Select(p => new { p.Type, p.Value }));
+        //}
 
-        [HttpGet("~/username")]
-        public IActionResult GetUserName()
-        {
-            return Ok(User.Identity.Name);
-        }
+        //[HttpGet("~/username")]
+        //public IActionResult GetUserName()
+        //{
+        //    return Ok(User.Identity.Name);
+        //}
 
-        [HttpGet("~/jwtid")]
-        public IActionResult GetUniqueId()
-        {
-            var jti = User.Claims.FirstOrDefault(p => p.Type == "jti");
-            return Ok(jti.Value);
-        }
+        //[HttpGet("~/jwtid")]
+        //public IActionResult GetUniqueId()
+        //{
+        //    var jti = User.Claims.FirstOrDefault(p => p.Type == "jti");
+        //    return Ok(jti.Value);
+        //}
 
 
         private IActionResult GetToken(UserModel user, int expireMinutes = 30)

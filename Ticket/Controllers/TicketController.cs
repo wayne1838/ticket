@@ -34,29 +34,6 @@ namespace Ticket.Controllers
         }
 
         /// <summary>
-        /// 測試用API
-        /// </summary>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [HttpGet("hello")]
-        public IActionResult Hello()
-        {
-            //https://localhost:44368/api/ticket/hello
-            return Ok("Hello");
-        }
-        /// <summary>
-        /// 測試用API QA
-        /// </summary>
-        /// <returns></returns>
-        [Authorize(Roles = "QA")]
-        [HttpGet("hello2")]
-        public IActionResult Hello2()
-        {
-           
-            return Ok("Hello");
-        }
-
-        /// <summary>
         /// 取得列表
         /// </summary>
         /// <param name="searchDto">條件</param>
