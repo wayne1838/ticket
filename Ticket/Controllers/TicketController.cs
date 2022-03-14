@@ -154,6 +154,12 @@ namespace Ticket.Controllers
         [HttpPut("{id}")]
         public IActionResult Update([FromRoute] int id, [FromBody] TicketRequestModel requestModel)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var data = _ticketService.Get(id);
             //不該查無資料
             if (data is null) return BadRequest();
@@ -183,6 +189,11 @@ namespace Ticket.Controllers
         public IActionResult UpdateSolve([FromRoute] int id)
         {
 
+            if (id>0)
+            {
+                return BadRequest();
+            }
+            //取得更新使用者ID
             var userId = User.FindFirst("userId") == null ? 0 : Int32.Parse(User.FindFirst("userId")?.Value);
 
             var isSuccess = _ticketService.UpdateSolve(id, userId);

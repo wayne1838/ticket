@@ -14,10 +14,14 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Ticket.Adapter.Login;
+using Ticket.Adapter.Login.Interface;
 using Ticket.Adapter.Ticket;
 using Ticket.Adapter.Ticket.Interface;
 using Ticket.Db;
 using Ticket.Mapping;
+using Ticket.Service.Login;
+using Ticket.Service.Login.Interface;
 using Ticket.Service.Ticket;
 using Ticket.Service.Ticket.Interface;
 
@@ -78,6 +82,8 @@ namespace Ticket
             });
             services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<ITicketAdapter, TicketAdapter>();
+            services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<ILoginAdapter, LoginAdapter>();
             //automapper
             var mapperConfig = new MapperConfiguration(mc =>
             {
