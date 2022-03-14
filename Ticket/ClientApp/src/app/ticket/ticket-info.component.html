@@ -1,0 +1,15 @@
+
+
+<mat-form-field class="example-full-width" appearance="fill">
+  <mat-label>摘要</mat-label>
+  <input matInput placeholder="摘要" [(ngModel)]="ticketInfo.summary">
+</mat-form-field>
+
+<mat-form-field class="example-full-width" appearance="fill">
+  <mat-label>描述</mat-label>
+  <input matInput placeholder="描述" [(ngModel)]="ticketInfo.desc">
+</mat-form-field>
+
+<button type="button" (click)="addError()" class="btn btn-primary" data-toggle="modal" data-target="#addErrorModal">
+  新增
+</button>

@@ -20,7 +20,7 @@ namespace Ticket.Enum
         /// 功能請求
         /// </summary>
         [Description("功能請求")]
-        FunctionRequest,
+        FeatureRequest,
         /// <summary>
         /// 測試用例
         /// </summary>

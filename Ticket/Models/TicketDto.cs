@@ -30,6 +30,12 @@ namespace Ticket.Models.Ticket
         /// <summary>優先級</summary>
         public int? Priority { get; set; }
 
+        /// <summary>建立者</summary>
+        public int CreateUser { get; set; }
+
+        /// <summary>建立者</summary>
+        public int? UpdateUser { get; set; }
+
 
 
     }

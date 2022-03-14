@@ -102,6 +102,7 @@ namespace Ticket.Controllers
         [HttpPost("Error")]
         public IActionResult CreateError([FromBody] TicketCreateModel requestModel)
         {
+            
             var dto = _mapper.Map<TicketDto>(requestModel);
             dto.Type = TicketTypeEnum.Error;
 
@@ -115,11 +116,11 @@ namespace Ticket.Controllers
         /// <param name="requestModel">新增資料</param>
         /// <returns></returns>
         [Authorize(Roles = "PM")]
-        [HttpPost("FunctionRequest")]
-        public IActionResult CreateFunctionRequest([FromBody] TicketCreateModel requestModel)
+        [HttpPost("FeatureRequest")]
+        public IActionResult CreateFeatureRequest([FromBody] TicketCreateModel requestModel)
         {
             var dto = _mapper.Map<TicketDto>(requestModel);
-            dto.Type = TicketTypeEnum.FunctionRequest;
+            dto.Type = TicketTypeEnum.FeatureRequest;
 
             return Create(dto);
 
@@ -153,7 +154,9 @@ namespace Ticket.Controllers
             {
                 return BadRequest();
             }
-           
+
+            dto.CreateUser = User.FindFirst("userId")==null? 0:Int32.Parse( User.FindFirst("userId")?.Value);
+
             var createId =  _ticketService.Create(dto);
 
             return Ok(new ResponseModel
@@ -174,9 +177,16 @@ namespace Ticket.Controllers
         [HttpPut("{id}")]
         public IActionResult Update([FromRoute] int id, [FromBody] TicketRequestModel requestModel)
         {
-            requestModel.Id = id;
-            var dto = _mapper.Map<TicketDto>(requestModel);
-            var isSuccess = _ticketService.Update(dto);
+            var data = _ticketService.Get(id);
+            //不該查無資料
+            if (data is null) return BadRequest();
+
+            //組合可以變更的資料
+            data.Summary = requestModel.Summary;
+            data.Desc = requestModel.Desc;
+            data.UpdateUser = User.FindFirst("userId") == null ? 0 : Int32.Parse(User.FindFirst("userId")?.Value);
+
+            var isSuccess = _ticketService.Update(data);
 
             return Ok(new ResponseModel
             {
@@ -196,7 +206,9 @@ namespace Ticket.Controllers
         public IActionResult UpdateSolve([FromRoute] int id)
         {
 
-            var isSuccess = _ticketService.UpdateSolve(id);
+            var userId = User.FindFirst("userId") == null ? 0 : Int32.Parse(User.FindFirst("userId")?.Value);
+
+            var isSuccess = _ticketService.UpdateSolve(id, userId);
 
             return Ok(new ResponseModel
             {

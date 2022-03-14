@@ -18,6 +18,7 @@ namespace Ticket.Mapping
             
             CreateMap<TicketModel, TicketDto>().ReverseMap();
             CreateMap<TicketCreateModel, TicketDto>().ReverseMap();
+            CreateMap<TicketRequestModel, TicketDto>().ReverseMap();
         }
     }
 }

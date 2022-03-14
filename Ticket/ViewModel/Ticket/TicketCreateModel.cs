@@ -25,11 +25,9 @@ namespace Ticket.ViewModels.Ticket
         public string Desc { get; set; }
 
         /// <summary>嚴重性</summary>
-        [Required]
         public int Serious { get; set; }
 
         /// <summary>優先級</summary>
-        [Required]
         public int Priority { get; set; }
 
 

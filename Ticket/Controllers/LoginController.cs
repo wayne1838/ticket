@@ -102,7 +102,8 @@ namespace Ticket.Controllers
                 // 你可以自行擴充 "roles" 加入登入者該有的角色
                 //claims.Add(new Claim("roles", "Admin"));
                 //claims.Add(new Claim("roles", "Users"));
-                claims.Add(new Claim("roles", EnumExtension.GetEnumDescription<RoleEnum>(user.Role))); 
+                claims.Add(new Claim("roles", EnumExtension.GetEnumDescription<RoleEnum>(user.Role)));
+                claims.Add(new Claim("userId", user.Id.ToString()));
 
                 var userClaimsIdentity = new ClaimsIdentity(claims);
 

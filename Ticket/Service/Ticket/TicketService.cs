@@ -46,10 +46,11 @@ namespace Ticket.Service.Ticket
             return  _ticketAdapter.Update(_mapper.Map<TicketModel>(model));
         }
 
-        public bool UpdateSolve(int id)
+        public bool UpdateSolve(int id,int updateUserId)
         {
             var data = _ticketAdapter.Get(id);
             data.Status = TicketStatusEnum.Solve;
+            data.UpdateUser = updateUserId;
             return _ticketAdapter.Update(data);
         }
 

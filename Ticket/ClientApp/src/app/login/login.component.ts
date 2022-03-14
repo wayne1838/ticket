@@ -10,9 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class LoginComponent {
   public user: string;
-  public error: string;
-  public tickets: TicketModel[];
-  userList: string[] = ['QA', 'RD', 'PM', 'Admin'];
+  userList: string[] = ['QAUserName', 'RDUserName', 'PMUserName', 'AdminUserName'];
   
 
   selectedUser = '';
@@ -20,6 +18,7 @@ export class LoginComponent {
 
   public login() {
     this.auth.login(this.selectedUser);
+    //this.router.navigate(['/ticket']);
     //this.http.post<any>('/api/login/login', { username: this.selectedUser }).subscribe(data => {
     //  console.log(data);
     //  localStorage.setItem('access_token', data);
@@ -33,14 +32,4 @@ export class LoginComponent {
   }
 }
 
-
-interface TicketModel {
-  Id: number;
-  Type: number;
-  Status: number;
-  Summary: string;
-  Desc: string;
-  Serious: number;
-  Priority: number;
-}
 

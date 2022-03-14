@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   login(username: string) {
@@ -20,6 +21,8 @@ export class AuthService {
     this.http.post<any>('/api/login/login', { username: username }).subscribe(data => {
       console.log(data);
       localStorage.setItem('access_token', data.token);
+
+      this.router.navigate(['/ticket']);
     })
   }
 

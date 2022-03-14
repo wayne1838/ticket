@@ -40,7 +40,7 @@ namespace Ticket.Service.Ticket.Interface
         /// <summary>
         /// 更新狀態為解決
         /// </summary>
-        bool UpdateSolve(int id);
+        bool UpdateSolve(int id, int updateUserId);
 
         /// <summary>
         /// 刪除
