@@ -45,11 +45,9 @@ namespace Ticket.Controllers
             var userData = _loginService.Get(user.UserName);
             if (userData != null)
             {
-                return Ok(new
-                {
+                return Ok(new{
                     token = _loginService.GetToken(userData)
                 });
-                //return GetToken(userData);
             }
             else
             {

@@ -60,7 +60,7 @@ namespace Ticket.Controllers
         {
             var data = _ticketService.Get(id);
             //不該查無資料
-            if (data is null) return BadRequest();
+            if (data is null) return NotFound();
 
             return Ok(new ResponseModel
             {
@@ -162,7 +162,7 @@ namespace Ticket.Controllers
 
             var data = _ticketService.Get(id);
             //不該查無資料
-            if (data is null) return BadRequest();
+            if (data is null) return NotFound();
 
             //組合可以變更的資料
             data.Summary = requestModel.Summary;
@@ -189,10 +189,10 @@ namespace Ticket.Controllers
         public IActionResult UpdateSolve([FromRoute] int id)
         {
 
-            if (id>0)
-            {
-                return BadRequest();
-            }
+            var data = _ticketService.Get(id);
+            //不該查無資料
+            if (data is null) return NotFound();
+
             //取得更新使用者ID
             var userId = User.FindFirst("userId") == null ? 0 : Int32.Parse(User.FindFirst("userId")?.Value);
 
@@ -214,6 +214,9 @@ namespace Ticket.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
+            var data = _ticketService.Get(id);
+            //不該查無資料
+            if (data is null) return NotFound();
 
             var isSuccess = _ticketService.Delete(id);
 
