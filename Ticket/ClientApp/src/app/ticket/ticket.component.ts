@@ -4,7 +4,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { TicketInfoComponent } from './ticket-info.component';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -16,10 +15,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 export class TicketComponent {
   public tickets: TicketModel[];
   @ViewChild(MatTable, { static: false }) table: MatTable<TicketModel>;
-  displayedColumns: string[] = ['type', 'status', 'summary', 'desc'];
+  displayedColumns: string[] = ['info','type', 'status', 'summary', 'desc'];
   role = "";
   isOpenErrorWindow: boolean = false;
   isUpdate: boolean = false;
+  isReadOnly: boolean = false;
 
   //取得列表enum的內容
   public typeEnums = Object.values(TypeEnum).filter(value => typeof value === 'number');
@@ -37,25 +37,40 @@ export class TicketComponent {
     private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.getUserRole();
     this.getList();
-
+    //依照權限設定表格內容
     if (this.role == "QA") {
-      this.displayedColumns = [...this.displayedColumns, 'edit', 'remove'];
+      this.displayedColumns = ['edit', 'remove', ...this.displayedColumns];
     } else if (this.role == "RD") {
-      this.displayedColumns = [...this.displayedColumns, 'solve'];
+      this.displayedColumns = ['solve', ...this.displayedColumns];
     }
   }
-
-  openErrorAddDialog(): void {
+  openErrorInfoDialog(data): void {//查看明細
     this.isUpdate = false;
+    this.isReadOnly = true;
+    this.ticketInfo = Object.assign({}, data);
     this.isOpenErrorWindow = true;
   }
-  openErrorEditDialog(data): void {
+  openErrorAddDialog(): void {//新增明細
+    this.isUpdate = false;
+    this.isReadOnly = false;
+    this.isOpenErrorWindow = true;
+    this.ticketInfo = {
+      type: TypeEnum.Error,
+      status: StatusEnum.UnSolve,
+      summary: "",
+      desc: ""
+    };
+  }
+  openErrorEditDialog(data): void {//編輯明細
     this.isUpdate = true;
+    this.isReadOnly = false;
     this.ticketInfo = Object.assign({}, data);;
     this.isOpenErrorWindow = true;
   }
-  closeErrorDialog(): void {
+  closeErrorDialog(): void {//關閉明細
     this.isOpenErrorWindow = false;
+    this.isReadOnly = false;
+    this.isUpdate = false;
     this.ticketInfo = {
       type: TypeEnum.Error,
       status: StatusEnum.None,
@@ -202,11 +217,13 @@ export const TypeEnumLabel = new Map<number, string>([
 
 export enum StatusEnum {
   None = 0,
-  Solve = 1
+  UnSolve = 1,
+  Solve = 2
 }
 
 export const StatusEnumLabel = new Map<number, string>([
   [StatusEnum.None, '無'],
+  [StatusEnum.UnSolve, '未解決'],
   [StatusEnum.Solve, '已解決']
 ]);
 interface TicketModel {

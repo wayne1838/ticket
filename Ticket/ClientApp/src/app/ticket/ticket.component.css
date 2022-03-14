@@ -19,3 +19,22 @@
 .example-full-width {
   width: 100%;
 }
+
+/* Column Widths */
+.mat-column-desc {
+  max-width: 250px;
+  padding-left: 24px;
+}
+
+.mat-column-solve,
+.mat-column-info,
+.mat-column-edit,
+.mat-column-remove,
+.mat-column-status,
+.mat-column-status,
+.mat-column-summary,
+.mat-column-type {
+  width: 70px;
+  padding-left: 24px;
+}
+

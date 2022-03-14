@@ -16,7 +16,6 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard'; 
 import { AuthInterceptor } from './AuthInterceptor';
-import { TicketInfoComponent } from './ticket/ticket-info.component';
 export function tokenGetter() { return localStorage.getItem('access_token'); } 
 
 @NgModule({
@@ -26,7 +25,6 @@ export function tokenGetter() { return localStorage.getItem('access_token'); }
     HomeComponent,
     LoginComponent,
     TicketComponent,
-    TicketInfoComponent,
     FetchDataComponent,
   ],
   imports: [

@@ -17,6 +17,11 @@ namespace Ticket.Enum
         [Description("無")]
         None,
         /// <summary>
+        /// 未解決
+        /// </summary>
+        [Description("未解決")]
+        UnSolve,
+        /// <summary>
         /// 已解決
         /// </summary>
         [Description("已解決")]

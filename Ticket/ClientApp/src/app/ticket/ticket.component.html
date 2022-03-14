@@ -21,30 +21,6 @@
   <table mat-table [dataSource]="tickets" class="mat-elevation-z8 demo-table">
 
 
-    <!-- Type Column -->
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef>類型</th>
-      <td mat-cell *matCellDef="let element">{{getTypeDesc(element.type)}}</td>
-    </ng-container>
-
-    <!-- Status Column -->
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>狀態</th>
-      <td mat-cell *matCellDef="let element">{{getStatusDesc(element.status)}}</td>
-    </ng-container>
-
-    <!-- Summary Column -->
-    <ng-container matColumnDef="summary">
-      <th mat-header-cell *matHeaderCellDef>描述</th>
-      <td mat-cell *matCellDef="let element">{{element.summary}}</td>
-    </ng-container>
-
-    <!-- Desc Column -->
-    <ng-container matColumnDef="desc">
-      <th mat-header-cell *matHeaderCellDef>內容</th>
-      <td mat-cell *matCellDef="let element">{{element.desc}}</td>
-    </ng-container>
-
     <!--  Column -->
     <ng-container matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef>編輯</th>
@@ -72,6 +48,39 @@
         </button>
       </td>
     </ng-container>
+    <!--  Column -->
+    <ng-container matColumnDef="info">
+      <th mat-header-cell *matHeaderCellDef>檢視</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button (click)="openErrorInfoDialog(element)" class="demo-button">
+          檢視
+        </button>
+      </td>
+    </ng-container>
+    <!-- Type Column -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>類型</th>
+      <td mat-cell *matCellDef="let element">{{getTypeDesc(element.type)}}</td>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>狀態</th>
+      <td mat-cell *matCellDef="let element">{{getStatusDesc(element.status)}}</td>
+    </ng-container>
+
+    <!-- Summary Column -->
+    <ng-container matColumnDef="summary">
+      <th mat-header-cell *matHeaderCellDef>描述</th>
+      <td mat-cell *matCellDef="let element">{{element.summary}}</td>
+    </ng-container>
+
+    <!-- Desc Column -->
+    <ng-container matColumnDef="desc">
+      <th mat-header-cell *matHeaderCellDef>內容</th>
+      <td mat-cell *matCellDef="let element">{{element.desc}}</td>
+    </ng-container>
+
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -83,8 +92,9 @@
 
 
 <mat-card *ngIf="isOpenErrorWindow">
-  <h3 *ngIf="!isUpdate">新增</h3>
-  <h3 *ngIf="isUpdate">更新</h3>
+  <h3 *ngIf="isReadOnly">檢視</h3>
+  <h3 *ngIf="!isUpdate && !isReadOnly">新增</h3>
+  <h3 *ngIf="isUpdate && !isReadOnly">更新</h3>
 
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>類型</mat-label>
@@ -108,21 +118,21 @@
 
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>摘要</mat-label>
-    <input matInput [disabled]="role=='RD'" placeholder="摘要" [(ngModel)]="ticketInfo.summary">
+    <input [disabled]="isReadOnly" matInput [disabled]="role=='RD'" placeholder="摘要" [(ngModel)]="ticketInfo.summary">
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>描述</mat-label>
-    <input matInput [disabled]="role=='RD'" placeholder="描述" [(ngModel)]="ticketInfo.desc">
+    <input [disabled]="isReadOnly" matInput [disabled]="role=='RD'" placeholder="描述" [(ngModel)]="ticketInfo.desc">
   </mat-form-field>
 
-  <button type="button" *ngIf="!isUpdate" (click)="btnAddError()" class="btn btn-primary">
+  <button type="button" *ngIf="!isUpdate && !isReadOnly" (click)="btnAddError()" class="btn btn-primary">
     新增
   </button>
-  <button type="button" *ngIf="isUpdate" (click)="btnEdit(ticketInfo.id)" class="btn btn-primary">
+  <button type="button" *ngIf="isUpdate && !isReadOnly" (click)="btnEdit(ticketInfo.id)" class="btn btn-primary">
     更新
   </button>
-  <button mat-raised-button (click)="btnSolve(ticketInfo.id)" *ngIf="role=='RD'" class="demo-button">
+  <button mat-raised-button (click)="btnSolve(ticketInfo.id)" *ngIf="role=='RD' && !isReadOnly" class="demo-button">
     解決
   </button>
   <button mat-raised-button (click)="closeErrorDialog()" class="demo-button">
